@@ -266,9 +266,25 @@ func (l *Logger) Writer(severity int) io.Writer {
 	}
 }
 
-// Log outputs a log message with additional fields.
-// fields can be nil.
-func (l *Logger) Log(severity int, msg string, fields map[string]interface{}) error {
+func mergeFieldMaps(fieldMaps ...map[string]interface{}) map[string]interface{} {
+	switch len(fieldMaps) {
+	case 0:
+		return nil
+	case 1:
+		return fieldMaps[0]
+	}
+	merged := make(map[string]interface{})
+	for _, m := range fieldMaps {
+		for k, v := range m {
+			merged[k] = v
+		}
+	}
+	return merged
+}
+
+// Log outputs a log message with optional fields.
+// Multiple fields will be merged shallowly, last item preferentially.
+func (l *Logger) Log(severity int, msg string, fields ...map[string]interface{}) error {
 	if severity > l.Threshold() {
 		return nil
 	}
@@ -278,7 +294,7 @@ func (l *Logger) Log(severity int, msg string, fields map[string]interface{}) er
 	buf := pool.Get().([]byte)
 	defer pool.Put(buf)
 
-	b, err := l.Formatter().Format(buf, l, t, severity, msg, fields)
+	b, err := l.Formatter().Format(buf, l, t, severity, msg, mergeFieldMaps(fields...))
 	if err != nil {
 		return err
 	}
@@ -302,33 +318,33 @@ func (l *Logger) Log(severity int, msg string, fields map[string]interface{}) er
 }
 
 // Critical outputs a critical log.
-// fields can be nil.
-func (l *Logger) Critical(msg string, fields map[string]interface{}) error {
-	return l.Log(LvCritical, msg, fields)
+// Multiple fields will be merged shallowly, last item preferentially.
+func (l *Logger) Critical(msg string, fields ...map[string]interface{}) error {
+	return l.Log(LvCritical, msg, fields...)
 }
 
 // Error outputs an error log.
-// fields can be nil.
-func (l *Logger) Error(msg string, fields map[string]interface{}) error {
-	return l.Log(LvError, msg, fields)
+// Multiple fields will be merged shallowly, last item preferentially.
+func (l *Logger) Error(msg string, fields ...map[string]interface{}) error {
+	return l.Log(LvError, msg, fields...)
 }
 
 // Warn outputs a warning log.
-// fields can be nil.
-func (l *Logger) Warn(msg string, fields map[string]interface{}) error {
-	return l.Log(LvWarn, msg, fields)
+// Multiple fields will be merged shallowly, last item preferentially.
+func (l *Logger) Warn(msg string, fields ...map[string]interface{}) error {
+	return l.Log(LvWarn, msg, fields...)
 }
 
 // Info outputs an informational log.
-// fields can be nil.
-func (l *Logger) Info(msg string, fields map[string]interface{}) error {
-	return l.Log(LvInfo, msg, fields)
+// Multiple fields will be merged shallowly, last item preferentially.
+func (l *Logger) Info(msg string, fields ...map[string]interface{}) error {
+	return l.Log(LvInfo, msg, fields...)
 }
 
 // Debug outputs a debug log.
-// fields can be nil.
-func (l *Logger) Debug(msg string, fields map[string]interface{}) error {
-	return l.Log(LvDebug, msg, fields)
+// Multiple fields will be merged shallowly, last item preferentially.
+func (l *Logger) Debug(msg string, fields ...map[string]interface{}) error {
+	return l.Log(LvDebug, msg, fields...)
 }
 
 // WriteThrough writes data through to the underlying writer.
