@@ -66,13 +66,13 @@ func TestAppendLogfmt(t *testing.T) {
 	}
 
 	b = b[:0]
-	b, _ = appendLogfmt(b, map[string]interface{}{
+	b, _ = appendLogfmt(b, Fields{
 		"abc":     123,
 		"def ghi": nil,
 	})
 	if string(b) != `{abc=123 "def ghi"=null}` &&
 		string(b) != `{"def ghi"=null abc=123}` {
-		t.Error("failed to format map[string]interface{}")
+		t.Error("failed to format Fields")
 	}
 
 	invalidUtf8 := "hello" + string([]byte{0x80})
@@ -144,7 +144,7 @@ func TestLogfmt2(t *testing.T) {
 
 	l := NewLogger()
 	l.SetTopic("tag2")
-	l.SetDefaults(map[string]interface{}{FnSecret: true})
+	l.SetDefaults(Fields{FnSecret: true})
 
 	ts := time.Date(2001, time.December, 3, 13, 45, 1, 123456789, time.UTC)
 	f := Logfmt{"localhost"}
@@ -159,7 +159,7 @@ func TestLogfmt2(t *testing.T) {
 	}
 
 	// override the default
-	fields := map[string]interface{}{
+	fields := Fields{
 		FnSecret: false,
 	}
 	if buf, err := f.Format(b, l, ts, LvDebug, "test message", fields); err != nil {

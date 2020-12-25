@@ -33,7 +33,7 @@ Field data can be any type though following types are recommended:
     int, int8, int16, int32, int64, and slice of them,
     uint, uint8, uint16, uint32, uint64, and slice of them,
     float32, float64, and slice of them,
-    map[string]interface{} where values are one of the above types.
+    Fields where values are one of the above types.
 
 The framework automatically redirects Go's standard log output to
 the default logger provided by this framework.

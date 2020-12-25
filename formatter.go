@@ -23,7 +23,7 @@ type Formatter interface {
 	// Implementations can assume enough capacity in buf to store
 	// mandatory fields except for msg (and optional fields).
 	Format(buf []byte, l *Logger, t time.Time, severity int,
-		msg string, fields map[string]interface{}) ([]byte, error)
+		msg string, fields Fields) ([]byte, error)
 
 	// String returns the formatter name.
 	String() string

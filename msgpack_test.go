@@ -167,7 +167,7 @@ func TestMsgpackFmt2(t *testing.T) {
 
 	l := NewLogger()
 	l.SetTopic("tag2")
-	l.SetDefaults(map[string]interface{}{FnSecret: true})
+	l.SetDefaults(Fields{FnSecret: true})
 
 	ts := time.Date(1970, time.January, 1, 0, 0, 10, 32000, time.UTC)
 	f := MsgPack{"localhost"}
@@ -183,7 +183,7 @@ func TestMsgpackFmt2(t *testing.T) {
 	}
 
 	// override the default
-	fields := map[string]interface{}{
+	fields := Fields{
 		FnSecret: false,
 	}
 	if buf, err := f.Format(b, l, ts, LvDebug, "test message", fields); err != nil {

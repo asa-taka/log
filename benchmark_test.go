@@ -5,8 +5,8 @@ import (
 	"testing"
 )
 
-func makeFields() map[string]interface{} {
-	return map[string]interface{}{
+func makeFields() Fields {
+	return Fields{
 		"str":   "abc def ghi",
 		"int":   int(-12345),
 		"float": float64(3.14159),

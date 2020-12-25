@@ -168,7 +168,7 @@ func (m MsgPack) String() string {
 
 // Format implements Formatter.Format.
 func (m MsgPack) Format(b []byte, l *Logger, t time.Time, severity int, msg string,
-	fields map[string]interface{}) ([]byte, error) {
+	fields Fields) ([]byte, error) {
 	b = append(b, byte(mpFixArray+3))
 	b, err := appendMsgpack(b, l.Topic())
 	if err != nil {

@@ -31,7 +31,7 @@ func TestJSONFormat(t *testing.T) {
 
 	l := NewLogger()
 	l.SetTopic("topic1")
-	l.SetDefaults(map[string]interface{}{
+	l.SetDefaults(Fields{
 		"abc":   123,
 		"_d123": true,
 	})
@@ -47,7 +47,7 @@ func TestJSONFormat(t *testing.T) {
 	if len(b) == 0 || b[len(b)-1] != '\n' {
 		t.Error(`len(b) == 0 || b[len(b)-1] != '\n'`)
 	}
-	var j map[string]interface{}
+	var j Fields
 	err = json.Unmarshal(b, &j)
 	if err != nil {
 		t.Fatal(err)
@@ -109,7 +109,7 @@ func TestJSONFormat(t *testing.T) {
 		}
 	}
 
-	b, err = f.Format(buf, l, ts, LvDebug, "fuga fuga", map[string]interface{}{
+	b, err = f.Format(buf, l, ts, LvDebug, "fuga fuga", Fields{
 		"abc":     []int{1, 2, 3},
 		"invalid": "12\xc534",
 		"tm":      testTextMarshal{},

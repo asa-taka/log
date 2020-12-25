@@ -28,7 +28,7 @@ func (f Logfmt) String() string {
 
 // Format implements Formatter.Format.
 func (f Logfmt) Format(buf []byte, l *Logger, t time.Time, severity int,
-	msg string, fields map[string]interface{}) ([]byte, error) {
+	msg string, fields Fields) ([]byte, error) {
 	var err error
 
 	// assume enough capacity for mandatory fields (except for msg).

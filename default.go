@@ -39,31 +39,31 @@ func Enabled(level int) bool {
 
 // Critical outputs a critical log using the default logger.
 // fields can be nil.
-func Critical(msg string, fields map[string]interface{}) error {
+func Critical(msg string, fields Fields) error {
 	return defaultLogger.Log(LvCritical, msg, fields)
 }
 
 // Error outputs an error log using the default logger.
 // fields can be nil.
-func Error(msg string, fields map[string]interface{}) error {
+func Error(msg string, fields Fields) error {
 	return defaultLogger.Log(LvError, msg, fields)
 }
 
 // Warn outputs a warning log using the default logger.
 // fields can be nil.
-func Warn(msg string, fields map[string]interface{}) error {
+func Warn(msg string, fields Fields) error {
 	return defaultLogger.Log(LvWarn, msg, fields)
 }
 
 // Info outputs an informational log using the default logger.
 // fields can be nil.
-func Info(msg string, fields map[string]interface{}) error {
+func Info(msg string, fields Fields) error {
 	return defaultLogger.Log(LvInfo, msg, fields)
 }
 
 // Debug outputs a debug log using the default logger.
 // fields can be nil.
-func Debug(msg string, fields map[string]interface{}) error {
+func Debug(msg string, fields Fields) error {
 	return defaultLogger.Log(LvDebug, msg, fields)
 }
 

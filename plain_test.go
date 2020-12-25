@@ -119,7 +119,7 @@ func TestPlainFormat2(t *testing.T) {
 
 	l := NewLogger()
 	l.SetTopic("tag2")
-	l.SetDefaults(map[string]interface{}{FnSecret: true})
+	l.SetDefaults(Fields{FnSecret: true})
 
 	ts := time.Date(2001, time.December, 3, 13, 45, 1, 123456789, time.UTC)
 	f := PlainFormat{"localhost"}
@@ -134,7 +134,7 @@ func TestPlainFormat2(t *testing.T) {
 	}
 
 	// override the default
-	fields := map[string]interface{}{
+	fields := Fields{
 		FnSecret: false,
 	}
 	if buf, err := f.Format(b, l, ts, LvDebug, "test message", fields); err != nil {
@@ -157,7 +157,7 @@ func TestPlainFormat3(t *testing.T) {
 	f := PlainFormat{"localhost"}
 	b := make([]byte, 0, 4096)
 
-	fields := map[string]interface{}{
+	fields := Fields{
 		"a": 1, "b": 2, "c": 3, "d": 4,
 	}
 

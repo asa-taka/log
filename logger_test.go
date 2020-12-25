@@ -70,7 +70,7 @@ func TestLogger(t *testing.T) {
 		t.Error("Failed to set threshold as debug")
 	}
 
-	l.SetDefaults(map[string]interface{}{
+	l.SetDefaults(Fields{
 		FnSecret: true,
 	})
 	buf.Reset()
@@ -84,7 +84,7 @@ func TestLogger(t *testing.T) {
 	}
 
 	buf.Reset()
-	fields := map[string]interface{}{
+	fields := Fields{
 		FnSecret: true,
 		"custom": 10000,
 	}
@@ -108,7 +108,7 @@ func (f testFormat) String() string {
 	return "test"
 }
 
-func (f testFormat) Format(buf []byte, l *Logger, t time.Time, severity int, msg string, fields map[string]interface{}) ([]byte, error) {
+func (f testFormat) Format(buf []byte, l *Logger, t time.Time, severity int, msg string, fields Fields) ([]byte, error) {
 	return []byte(msg), nil
 }
 

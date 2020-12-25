@@ -120,7 +120,7 @@ func (l *Logger) Threshold() int {
 // This can be used to avoid futile computation for logs being ignored.
 //
 //    if log.Enabled(log.LvDebug) {
-//        log.Debug("message", map[string]interface{}{
+//        log.Debug("message", Fields{
 //            "debug info": "...",
 //        })
 //    }
@@ -157,7 +157,7 @@ func (l *Logger) SetThresholdByName(n string) error {
 
 // SetDefaults sets default field values for the logger.
 // Setting nil effectively clear the defaults.
-func (l *Logger) SetDefaults(d map[string]interface{}) error {
+func (l *Logger) SetDefaults(d Fields) error {
 	for key := range d {
 		if !IsValidKey(key) {
 			return ErrInvalidKey
@@ -169,8 +169,8 @@ func (l *Logger) SetDefaults(d map[string]interface{}) error {
 }
 
 // Defaults returns default field values.
-func (l *Logger) Defaults() map[string]interface{} {
-	return l.defaults.Load().(map[string]interface{})
+func (l *Logger) Defaults() Fields {
+	return l.defaults.Load().(Fields)
 }
 
 // SetFormatter sets log formatter.
@@ -266,9 +266,23 @@ func (l *Logger) Writer(severity int) io.Writer {
 	}
 }
 
+// Fields represents additional information used in logging method arguments.
+//
+// Field data can be any type though following types are recommended:
+//
+//     nil,
+//     bool,
+//     time.Time (formatted in RFC3339),
+//     string and slice of strings,
+//     int, int8, int16, int32, int64, and slice of them,
+//     uint, uint8, uint16, uint32, uint64, and slice of them,
+//     float32, float64, and slice of them,
+//     map[string]interface{} where values are one of the above types.
+type Fields = map[string]interface{}
+
 // Log outputs a log message with additional fields.
 // fields can be nil.
-func (l *Logger) Log(severity int, msg string, fields map[string]interface{}) error {
+func (l *Logger) Log(severity int, msg string, fields Fields) error {
 	if severity > l.Threshold() {
 		return nil
 	}
@@ -303,31 +317,31 @@ func (l *Logger) Log(severity int, msg string, fields map[string]interface{}) er
 
 // Critical outputs a critical log.
 // fields can be nil.
-func (l *Logger) Critical(msg string, fields map[string]interface{}) error {
+func (l *Logger) Critical(msg string, fields Fields) error {
 	return l.Log(LvCritical, msg, fields)
 }
 
 // Error outputs an error log.
 // fields can be nil.
-func (l *Logger) Error(msg string, fields map[string]interface{}) error {
+func (l *Logger) Error(msg string, fields Fields) error {
 	return l.Log(LvError, msg, fields)
 }
 
 // Warn outputs a warning log.
 // fields can be nil.
-func (l *Logger) Warn(msg string, fields map[string]interface{}) error {
+func (l *Logger) Warn(msg string, fields Fields) error {
 	return l.Log(LvWarn, msg, fields)
 }
 
 // Info outputs an informational log.
 // fields can be nil.
-func (l *Logger) Info(msg string, fields map[string]interface{}) error {
+func (l *Logger) Info(msg string, fields Fields) error {
 	return l.Log(LvInfo, msg, fields)
 }
 
 // Debug outputs a debug log.
 // fields can be nil.
-func (l *Logger) Debug(msg string, fields map[string]interface{}) error {
+func (l *Logger) Debug(msg string, fields Fields) error {
 	return l.Log(LvDebug, msg, fields)
 }
 
